@@ -12,7 +12,7 @@ import (
 
 var version = "unknown"
 
-func main() {
+func NewApp() *cli.App {
 	u := undocker.Undocker{
 		Out: os.Stdout,
 		Err: os.Stderr,
@@ -30,6 +30,7 @@ func main() {
 			Name:        "registry-url, r",
 			Usage:       "docker registry url",
 			EnvVar:      "REGISTRY_URL",
+			Value:       "https://registry-1.docker.io/",
 			Destination: &opts.RegistryURL,
 		},
 		cli.StringFlag{
@@ -113,7 +114,11 @@ func main() {
 
 	app.Commands = append(app.Commands, extractCommand)
 	app.Commands = append(app.Commands, showCommand)
-	err := app.Run(os.Args)
+	return app
+}
+
+func main(){
+	err := NewApp().Run(os.Args)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(3)

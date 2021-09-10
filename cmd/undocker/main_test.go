@@ -1,6 +1,16 @@
 package main
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
+
+func Test_NewApp(t *testing.T) {
+	err := NewApp().Run(strings.Split("undocker --tmpdir ./tmp extract busybox:latest ./image", " "))
+	if err!=nil{
+		t.Fatal(err)
+	}
+}
 
 func Test_parseReference(t *testing.T) {
 	type args struct {

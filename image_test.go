@@ -8,13 +8,14 @@ import (
 )
 
 func TestImage_Extract(t *testing.T) {
+	tmpdir, _ := ioutil.TempDir("./tmp/", "")
+	defer os.RemoveAll(tmpdir)
+
 	// tokibi/busybox-bundle-registry
-	registry, err := NewRegistry("http://localhost:5000", "", "")
+	registry, err := NewRegistry("http://localhost:5000", "", "", tmpdir)
 	if err != nil {
 		t.Error(err)
 	}
-	tmpdir, _ := ioutil.TempDir("./tmp/", "")
-	defer os.RemoveAll(tmpdir)
 
 	type fields struct {
 		Source     Source
