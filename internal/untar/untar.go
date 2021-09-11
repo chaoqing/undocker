@@ -8,6 +8,10 @@ import (
 	"strings"
 )
 
+var (
+	ReportChownError = false
+	)
+
 type Options struct {
 	OverwriteSymlinkRefs bool
 }
@@ -44,7 +48,9 @@ func untar(r io.Reader, dir string, opts Options) error {
 				return err
 			}
 			if err = os.Lchown(abs, f.Uid, f.Gid); err != nil {
-				return err
+				if ReportChownError{
+					return err
+				}
 			}
 
 		case f.Typeflag == tar.TypeReg:
@@ -67,7 +73,9 @@ func untar(r io.Reader, dir string, opts Options) error {
 				return err
 			}
 			if err = os.Lchown(abs, f.Uid, f.Gid); err != nil {
-				return err
+				if ReportChownError{
+					return err
+				}
 			}
 
 		case f.Typeflag == tar.TypeSymlink:
@@ -78,7 +86,9 @@ func untar(r io.Reader, dir string, opts Options) error {
 			}
 
 			if err = os.Lchown(abs, f.Uid, f.Gid); err != nil {
-				return err
+				if ReportChownError{
+					return err
+				}
 			}
 
 		case f.Typeflag == tar.TypeLink:
@@ -88,7 +98,9 @@ func untar(r io.Reader, dir string, opts Options) error {
 				return err
 			}
 			if err = os.Lchown(abs, f.Uid, f.Gid); err != nil {
-				return err
+				if ReportChownError{
+					return err
+				}
 			}
 		}
 	}
